@@ -14,7 +14,7 @@ int main() {
 	srand(time(NULL));
 	BinarySearchTree<int> *bst = new BinarySearchTree<int>(compar);
 	
-	int n = 23;
+	int n = 20;
 	int N = 1<<n;
 	
 	counter = 0;	

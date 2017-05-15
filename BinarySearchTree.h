@@ -16,7 +16,7 @@ private:
 		Node(T content):content(content),left(0),right(0){}
 	};
 	Node *root;
-	int (*f)(T, T);
+	int (*compar)(T, T);
 	
 	Node *chopBiggestFromLeft(Node* node) {
 		Node **nodePtrToChild = &(node->left), *child = node->left;
@@ -50,15 +50,15 @@ private:
 	
 public:
 	
-	BinarySearchTree(int (*f)(T, T)):root(0),f(f){srand(time(0));}
+	BinarySearchTree(int (*compar)(T, T)):root(0),compar(compar){srand(time(0));}
 	
 	bool has(T value) {
 		Node* iterNode = root;
-		int compar;
+		int comparation;
 		while (iterNode != 0) {
-			compar = f(iterNode->content, value);
-			if (compar == 0) return true;
-			if (compar > 0) iterNode = iterNode->left;
+			comparation = compar(iterNode->content, value);
+			if (comparation == 0) return true;
+			if (comparation > 0) iterNode = iterNode->left;
 			else iterNode = iterNode->right;
 		}
 		return false;
@@ -70,14 +70,14 @@ public:
 			return true;
 		}
 		Node *parent = root, *child = 0;
-		int compar;
+		int comparation;
 		while (true) {
-			compar = f(parent->content, value);
-			if (compar == 0) return false;
-			if (compar > 0) child = parent->left;
+			comparation = compar(parent->content, value);
+			if (comparation == 0) return false;
+			if (comparation > 0) child = parent->left;
 			else child = parent->right;
 			if (child == 0) {
-				if (compar > 0) parent->left = new Node(value);
+				if (comparation > 0) parent->left = new Node(value);
 				else parent->right = new Node(value);
 				return true;
 			}
@@ -88,10 +88,10 @@ public:
 	bool remove(T value) {
 		if (root == 0) return false;
 		Node **parentPtr = &root, *node = root;
-		int compar;
+		int comparation;
 		while (true) {
-			compar = f(node->content, value);
-			if (compar == 0) {
+			comparation = compar(node->content, value);
+			if (comparation == 0) {
 				if (node->left == 0 && node->right == 0) *parentPtr = 0;
 				else if (node->left == 0) *parentPtr = node->right;
 				else if (node->right == 0) *parentPtr = node->left;
@@ -112,7 +112,7 @@ public:
 				}
 				return true;
 			}
-			if (compar > 0) {
+			if (comparation > 0) {
 				parentPtr = &(node->left);
 				node = node->left;
 			}
@@ -130,3 +130,4 @@ public:
 };
 
 #endif
+
