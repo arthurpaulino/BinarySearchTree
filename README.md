@@ -20,7 +20,7 @@ bst->add(x);
 * Search
 
 ```cpp
-bool contains = bst->has(a);
+bool contains = bst->has(x);
 ```
 
 * Remotion
