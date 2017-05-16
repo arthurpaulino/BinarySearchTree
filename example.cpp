@@ -45,15 +45,15 @@ int main() {
 	
 	counter = 0;	
 	for (int i = 0; i < N; i++) bst_efficiency->addContent(rand());
-	printf("Average of %.2lf comparations to add 2^%d numbers.\n", (double)counter/(double)N, n);
+	printf("Average of %.2lf comparisions to add 2^%d numbers.\n", (double)counter/(double)N, n);
 	
 	counter = 0;	
 	for (int i = 0; i < N; i++) bst_efficiency->hasKey(rand());
-	printf("Average of %.2lf comparations to search 2^%d numbers.\n", (double)counter/(double)N, n);
+	printf("Average of %.2lf comparisions to search 2^%d numbers.\n", (double)counter/(double)N, n);
 	
 	counter = 0;
 	for (int i = 0; i < N; i++) bst_efficiency->removeByKey(rand());
-	printf("Average of %.2lf comparations to remove 2^%d numbers.\n", (double)counter/(double)N, n);
+	printf("Average of %.2lf comparisions to remove 2^%d numbers.\n", (double)counter/(double)N, n);
 	
 	delete bst_efficiency;
 	
