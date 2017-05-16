@@ -19,11 +19,11 @@ string getKey(Person *person) {
 }
 
 int main() {
-BinarySearchTree<Person*,string> *bst = new BinarySearchTree<Person*,string>(getKey,compareKeys);
+	BinarySearchTree<Person*,string> *bst = new BinarySearchTree<Person*,string>(getKey,compareKeys);
 ```
 * Insertion
 ```cpp
-Person *p;
+Person *p = new Person("name", 23);
 bool added = bst->addContent(p);
 ```
 * Search
