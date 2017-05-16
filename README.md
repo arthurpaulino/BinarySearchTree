@@ -1,13 +1,11 @@
 BinarySearchTree
 ================
-
 An implementation of the *(unbalanced) binary search tree* data structure written in C++. The constructor requires **two types** (the type of the keys and the type of the stored content) and **two functions**:
 1. A function that returns a *key*, given certain *content*
 2. A function that compares two *keys* and returns an integer that is
    * equal *0* if the keys match
    * greater than *0* if the first *key* is "bigger" than the first one
    * less than *0* otherwise
-
 * Instantiation
 ```cpp
 int compareKeys(string nameA, string nameB) {
