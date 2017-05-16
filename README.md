@@ -43,3 +43,4 @@ Person *p = bst->getContentByKey("name");
 ```cpp
 Person *p = bst->extractContentByKey("name");
 ```
+**Warning**: modifying *content* in a way that changes the comparisions with the *key* generated from it will most likely crash the *binary search tree* stability. In the `example.c` file, there's nothing wrong with changing the *age* of the persons, since *age* is not used for comparisions.
