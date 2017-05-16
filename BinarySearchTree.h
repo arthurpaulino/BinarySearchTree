@@ -3,20 +3,22 @@
 
 #include <ctime>
 #include <cstdlib>
+#include <stdexcept>
 
-template <class T>
+template <typename C, typename K>
 class BinarySearchTree {
 
 private:
 
 	class Node {
 	public:
-		T content;
+		C content;
 		Node *left, *right;
-		Node(T content):content(content),left(0),right(0){}
+		Node(C content):content(content),left(0),right(0){}
 	};
 	Node *root;
-	int (*compar)(T, T);
+	K (*getKey)(C);
+	int (*compareKeys)(K, K);
 	
 	Node *chopBiggestFromLeft(Node* node) {
 		Node **nodePtrToChild = &(node->left), *child = node->left;
@@ -50,47 +52,47 @@ private:
 	
 public:
 	
-	BinarySearchTree(int (*compar)(T, T)):root(0),compar(compar){srand(time(0));}
+	BinarySearchTree(K (*getKey)(C), int (*compareKeys)(K, K)):getKey(getKey),compareKeys(compareKeys),root(0){srand(time(0));}
 	
-	bool has(T value) {
-		Node* iterNode = root;
+	bool hasKey(K key) {
+		Node* node = root;
 		int comparation;
-		while (iterNode != 0) {
-			comparation = compar(iterNode->content, value);
+		while (node != 0) {
+			comparation = compareKeys(getKey(node->content), key);
 			if (comparation == 0) return true;
-			if (comparation > 0) iterNode = iterNode->left;
-			else iterNode = iterNode->right;
+			if (comparation > 0) node = node->left;
+			else node = node->right;
 		}
 		return false;
 	}
 	
-	bool add(T value) {
+	bool addContent(C content) {
 		if (root == 0) {
-			root = new Node(value);
+			root = new Node(content);
 			return true;
 		}
 		Node *parent = root, *child = 0;
 		int comparation;
 		while (true) {
-			comparation = compar(parent->content, value);
+			comparation = compareKeys(getKey(parent->content), getKey(content));
 			if (comparation == 0) return false;
 			if (comparation > 0) child = parent->left;
 			else child = parent->right;
 			if (child == 0) {
-				if (comparation > 0) parent->left = new Node(value);
-				else parent->right = new Node(value);
+				if (comparation > 0) parent->left = new Node(content);
+				else parent->right = new Node(content);
 				return true;
 			}
 			parent = child;
 		}
 	}
 	
-	bool remove(T value) {
+	bool removeByKey(K key) {
 		if (root == 0) return false;
 		Node **parentPtr = &root, *node = root;
 		int comparation;
 		while (true) {
-			comparation = compar(node->content, value);
+			comparation = compareKeys(getKey(node->content), key);
 			if (comparation == 0) {
 				if (node->left == 0 && node->right == 0) *parentPtr = 0;
 				else if (node->left == 0) *parentPtr = node->right;
@@ -121,6 +123,57 @@ public:
 				node = node->right;
 			}
 			if (node == 0) return false;
+		}
+	}
+	
+	C getContentByKey(K key) {
+		Node* node = root;
+		int comparation;
+		while (node != 0) {
+			comparation = compareKeys(getKey(node->content), key);
+			if (comparation == 0) return node->content;
+			if (comparation > 0) node = node->left;
+			else node = node->right;
+		}
+		throw std::invalid_argument("Key not found.");
+	}
+	
+	C extractByKey(K key) {
+		if (root == 0) throw std::invalid_argument("Key not found.");
+		Node **parentPtr = &root, *node = root;
+		int comparation;
+		while (true) {
+			comparation = compareKeys(getKey(node->content), key);
+			if (comparation == 0) {
+				if (node->left == 0 && node->right == 0) *parentPtr = 0;
+				else if (node->left == 0) *parentPtr = node->right;
+				else if (node->right == 0) *parentPtr = node->left;
+				else {
+					Node *substitute;
+					if (rand()%2) {
+						substitute = chopBiggestFromLeft(node);
+						substitute->right = node->right;
+						substitute->left = node->left;
+						*parentPtr = substitute;
+					}
+					else {
+						substitute = chopSmallestFromRight(node);
+						substitute->left = node->left;
+						substitute->right = node->right;
+						*parentPtr = substitute;
+					}
+				}
+				return node->content;
+			}
+			if (comparation > 0) {
+				parentPtr = &(node->left);
+				node = node->left;
+			}
+			else {
+				parentPtr = &(node->right);
+				node = node->right;
+			}
+			if (node == 0) throw std::invalid_argument("Key not found.");
 		}
 	}
 	
