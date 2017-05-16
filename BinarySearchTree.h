@@ -138,7 +138,7 @@ public:
 		throw std::invalid_argument("Key not found.");
 	}
 	
-	C extractByKey(K key) {
+	C extractContentByKey(K key) {
 		if (root == 0) throw std::invalid_argument("Key not found.");
 		Node **parentPtr = &root, *node = root;
 		int comparation;

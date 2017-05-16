@@ -81,7 +81,7 @@ int main() {
 	printf("boris is %d years old.\n", p->age);
 	if (bst_usability->hasKey("boris")) printf("'boris' has been found\n");
 	
-	p = bst_usability->extractByKey("carl");
+	p = bst_usability->extractContentByKey("carl");
 	printf("carl is %d years old.\n", p->age);
 	if (!bst_usability->hasKey("carl")) printf("'carl' has not been found\n");
 	
